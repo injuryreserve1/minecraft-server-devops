@@ -44,7 +44,7 @@ resource "docker_container" "minecraft_server" {
     env = [
         "EULA=TRUE",
         "TYPE=PAPER",
-        "SPIGOT_DOWNLOAD_URL=https://github.com",
+        "SPIGOT_DOWNLOAD_URL=https://github.com/sladkoff/minecraft-prometheus-exporter/releases/download/v2.5.0/prometheus-exporter-2.5.0.jar",
         "ONLINE_MODE=FALSE"
     ]
 
@@ -113,8 +113,8 @@ resource "docker_container" "prometheus" {
     ]
 
     upload {
-        target = "/etc/prometheus/prometheus.yml"
-        content = <<EOF
+        file           = "/etc/prometheus/prometheus.yml"
+        content_base64 = base64encode(<<-EOF
 global:
   scrape_interval: 5s
 scrape_configs:
@@ -122,6 +122,7 @@ scrape_configs:
     static_configs:
       - targets: ['mc-devops-project:9225']
 EOF
+        )
     }
 
     ports {
