@@ -14,12 +14,18 @@ resource "docker_network" "mc_net" {
     name = "minecraft-network"
 }
 
-# 2 тома для данных
+# 4 тома для данных
 resource "docker_volume" "mc_data" {
     name = "mc_server_data"
 }
 resource "docker_volume" "mc_backups_store" {
     name = "mc_server_backups"
+}
+resource "docker_volume" "prometheus_data" {
+    name = "prometheus_data"
+}
+resource "docker_volume" "grafana_data" {
+    name = "grafana_data"
 }
 
 # образ майна
@@ -37,7 +43,9 @@ resource "docker_container" "minecraft_server" {
 
     env = [
         "EULA=TRUE",
-        "TYPE=VANILLA"
+        "TYPE=PAPER",
+        "SPIGOT_DOWNLOAD_URL=https://github.com",
+        "ONLINE_MODE=FALSE"
     ]
 
     ports {
@@ -85,5 +93,74 @@ resource "docker_container" "mc_backup" {
 
     networks_advanced {
         name = docker_network.mc_net.name
+    }
+}
+
+# прометеус 
+resource "docker_image" "prometheus" {
+    name         = "prom/prometheus:latest"
+    keep_locally = true
+}
+
+resource "docker_container" "prometheus" {
+    name    = "prometheus"
+    image   = docker_image.prometheus.image_id
+    restart = "unless-stopped"
+    
+    command = [
+        "--config.file=/etc/prometheus/prometheus.yml",
+        "--storage.tsdb.path=/prometheus"
+    ]
+
+    upload {
+        target = "/etc/prometheus/prometheus.yml"
+        content = <<EOF
+global:
+  scrape_interval: 5s
+scrape_configs:
+  - job_name: 'minecraft'
+    static_configs:
+      - targets: ['mc-devops-project:9225']
+EOF
+    }
+
+    ports {
+        internal = 9090
+        external = 9090
+    }
+
+    networks_advanced {
+        name = docker_network.mc_net.name
+    }
+
+    volumes {
+        volume_name    = docker_volume.prometheus_data.name
+        container_path = "/prometheus"
+    }
+}
+
+# графана
+resource "docker_image" "grafana" {
+    name         = "grafana/grafana-oss:latest"
+    keep_locally = true
+}
+
+resource "docker_container" "grafana" {
+    name    = "grafana"
+    image   = docker_image.grafana.image_id
+    restart = "unless-stopped"
+
+    ports {
+        internal = 3000
+        external = 3000
+    }
+
+    networks_advanced {
+        name = docker_network.mc_net.name
+    }
+
+    volumes {
+        volume_name    = docker_volume.grafana_data.name
+        container_path = "/var/lib/grafana"
     }
 }
