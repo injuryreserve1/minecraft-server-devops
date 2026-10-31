@@ -47,13 +47,13 @@ resource "docker_container" "minecraft_server" {
         "EULA=TRUE",
         "TYPE=PAPER",
         "ONLINE_MODE=FALSE",
+        "UID=1000", 
+        "GID=1000" 
     ]
 
     upload {
         file   = "/data/plugins/minecraft-prometheus-exporter-3.1.2.jar"
         source = "prometheus-exporter-2.5.0.jar"
-        user   = "1000"
-        group  = "1000"
     }
 
     ports {
