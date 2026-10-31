@@ -46,11 +46,13 @@ resource "docker_container" "minecraft_server" {
     env = [
         "EULA=TRUE",
         "TYPE=PAPER",
-        "SPIGOT_DOWNLOAD_URL=https://github.com/sladkoff/minecraft-prometheus-exporter/releases/download/v3.1.2/minecraft-prometheus-exporter-3.1.2.jar",
         "ONLINE_MODE=FALSE",
-        "PROMETHEUS_EXPORTER_HOST=0.0.0.0",
-        "PROMETHEUS_EXPORTER_PORT=9225"
     ]
+
+    upload {
+        file   = "/data/plugins/minecraft-prometheus-exporter-3.1.2.jar"
+        source = "minecraft-prometheus-exporter-3.1.2.jar"
+    }
 
     ports {
         internal = 25565
