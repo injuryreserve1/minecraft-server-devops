@@ -53,7 +53,7 @@ resource "docker_container" "minecraft_server" {
 
     upload {
         file   = "/data/plugins/minecraft-prometheus-exporter-3.1.2.jar"
-        source = "prometheus-exporter-2.5.0.jar"
+        source = "minecraft-prometheus-exporter-3.1.2.jar"
     }
 
     ports {
