@@ -140,7 +140,7 @@ EOF
     }
 }
 
-# графана
+## графана 
 resource "docker_image" "grafana" {
     name         = "grafana/grafana-oss:latest"
     keep_locally = true
