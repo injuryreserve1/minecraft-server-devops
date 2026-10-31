@@ -70,6 +70,22 @@ resource "docker_container" "minecraft_server" {
         container_path = "/data/plugins/minecraft-prometheus-exporter-3.1.2.jar"
         read_only      = true
     }
+
+    upload {
+        file           = "/data/plugins/PrometheusExporter/config.yml"
+        content_base64 = base64encode(<<-EOF
+# Конфиг плагина мониторинга
+host: 0.0.0.0
+port: 9940
+enable_metrics:
+  chunks: true
+  objects: true
+  players: true
+  jvm: true
+EOF
+        )
+    }
+
 }
 
 # образ бекапа
@@ -129,7 +145,7 @@ global:
 scrape_configs:
   - job_name: 'minecraft'
     static_configs:
-      - targets: ['mc-devops-project:9225']
+      - targets: ['mc-devops-project:9940']
 EOF
         )
     }
