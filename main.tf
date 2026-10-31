@@ -46,15 +46,8 @@ resource "docker_container" "minecraft_server" {
     env = [
         "EULA=TRUE",
         "TYPE=PAPER",
-        "ONLINE_MODE=FALSE",
-        "UID=1000", 
-        "GID=1000" 
+        "ONLINE_MODE=FALSE"
     ]
-
-    upload {
-        file   = "/data/plugins/minecraft-prometheus-exporter-3.1.2.jar"
-        source = "minecraft-prometheus-exporter-3.1.2.jar"
-    }
 
     ports {
         internal = 25565
@@ -68,6 +61,12 @@ resource "docker_container" "minecraft_server" {
     volumes {
         volume_name = docker_volume.mc_data.name
         container_path = "/data"
+    }
+
+    volumes {
+        host_path      = "/home/comp/terraform/minecraft_project/minecraft-prometheus-exporter-3.1.2.jar"
+        container_path = "/data/plugins/minecraft-prometheus-exporter-3.1.2.jar"
+        read_only      = true
     }
 }
 
