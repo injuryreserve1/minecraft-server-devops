@@ -41,6 +41,8 @@ resource "docker_container" "minecraft_server" {
 
     restart = "unless-stopped"
 
+    dns = ["8.8.8.8", "1.1.1.1"]
+
     env = [
         "EULA=TRUE",
         "TYPE=PAPER",
