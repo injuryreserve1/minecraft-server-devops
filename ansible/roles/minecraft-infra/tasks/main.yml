@@ -22,7 +22,7 @@
 - name: Download Prometheus exporter plugin
   ansible.builtin.get_url:
     url: "{{ prometheus_exporter_url }}"
-    dest: "{{ minecraft_project_dir }}/minecraft-prometheus-exporter.jar"
+    dest: "{{ minecraft_project_dir }}/minecraft-prometheus-exporter-3.1.2.jar"
     mode: '0644'
 
 - name: Run terraform manifest
