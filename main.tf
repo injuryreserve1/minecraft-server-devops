@@ -72,15 +72,14 @@ resource "docker_container" "minecraft_server" {
     upload {
         file           = "/data/plugins/PrometheusExporter/config.yml"
         content_base64 = base64encode(<<-EOF
-# Конфиг плагина мониторинга
-host: 0.0.0.0
-port: 9940
-enable_metrics:
-  chunks: true
-  objects: true
-  players: true
-  jvm: true
-EOF
+    host: 0.0.0.0
+    port: 9940
+    enable_metrics:
+        chunks: true
+        objects: true
+        players: true
+        jvm: true
+    EOF
         )
     }
 

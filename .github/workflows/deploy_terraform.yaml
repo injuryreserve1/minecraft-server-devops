@@ -12,7 +12,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: /home/comp/terraform/minecraft_project
+        working-directory: /home/comp/terraform/minecraft_project/terraform
 
     steps:
       - name: Checkout Code
