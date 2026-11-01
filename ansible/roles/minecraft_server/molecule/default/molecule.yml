@@ -1,0 +1,25 @@
+---
+dependency:
+  name: shell
+  command: "echo 'Skipping galaxy checks'"
+driver:
+  name: docker
+platforms:
+  - name: instance
+    image: geerlingguy/docker-ubuntu2204-ansible:latest
+    command: ""
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    privileged: true
+    pre_build_image: true
+    security_opts:
+      - seccomp=unconfined
+provisioner:
+  name: ansible
+  playbooks:
+    converge: playbook.yml
+  config_options:
+    defaults:
+      collections_on_ansible_version_mismatch: ignore
+verifier:
+  name: ansible
