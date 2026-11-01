@@ -46,9 +46,7 @@ resource "docker_container" "minecraft_server" {
     env = [
         "EULA=TRUE",
         "TYPE=PAPER",
-        "ONLINE_MODE=FALSE",
-        "PROMETHEUS_HOST=0.0.0.0",
-        "PROMETHEUS_PORT=9225"
+        "ONLINE_MODE=FALSE"
     ]
 
     ports {
