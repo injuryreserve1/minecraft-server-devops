@@ -1,4 +1,0 @@
----
-minecraft_project_dir: "/home/comp/terraform/minecraft_project"
-minecraft_plugin_version: "3.1.2"
-minecraft_plugin_url: "https://github.com/sladkoff/minecraft-prometheus-exporter/releases/download/v{{ minecraft_plugin_version }}/minecraft-prometheus-exporter-{{ minecraft_plugin_version }}.jar"

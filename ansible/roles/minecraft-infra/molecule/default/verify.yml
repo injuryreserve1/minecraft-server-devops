@@ -1,0 +1,29 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Check docker installed
+      ansible.builtin.command: docker --version
+      changed_when: false
+
+    - name: Check docker service
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: true
+      check_mode: true
+      register: docker_svc
+      failed_when: docker_svc.changed
+
+    - name: Check project dir
+      ansible.builtin.stat:
+        path: /opt/minecraft
+      register: proj
+      failed_when: not proj.stat.isdir
+
+    - name: Check exporter jar
+      ansible.builtin.stat:
+        path: /opt/minecraft/minecraft-prometheus-exporter.jar
+      register: jar
+      failed_when: not jar.stat.exists

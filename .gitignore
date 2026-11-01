@@ -4,3 +4,4 @@
 *terraform.lock.hcl
 **/.venv/
 actions-runner/
+*.tar.gz

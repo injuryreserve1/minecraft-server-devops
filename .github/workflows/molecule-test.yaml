@@ -1,0 +1,25 @@
+name: Ansible Role Test with Molecule
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  molecule:
+    name: "Molecule Test"
+    runs-on: self-hosted
+
+    defaults:
+      run:
+        working-directory: /home/comp/terraform/minecraft_project/ansible/roles/minecraft-infra
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Molecule Test
+        run: molecule test

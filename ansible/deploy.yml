@@ -1,5 +1,27 @@
 ---
 - name: prepare server and launch minecraft infrastructure
-  hosts: mc_servers
-  roles:
-    - role: minecraft_server
+  hosts: mc_server
+  # become: true
+  tasks:
+    - name: download docker
+      ansible.builtin.apt:
+        name: docker.io
+        state: present
+        update_cache: true
+    
+    - name: create folder for project
+      ansible.builtin.file:
+        path: /home/comp/terraform/minecraft_project
+        state: directory
+        mode: '0755'
+    
+    - name: download plugin prometheus exporter
+      ansible.builtin.get_url:
+        url: https://github.com/sladkoff/minecraft-prometheus-exporter/releases/download/v3.1.2/minecraft-prometheus-exporter-3.1.2.jar
+        dest: /home/comp/terraform/minecraft_project/minecraft-prometheus-exporter-3.1.2.jar
+        mode: '0644'
+    
+    - name: launch terraform manifest
+      community.general.terraform:
+        project_path: "../terraform"
+        state: present
