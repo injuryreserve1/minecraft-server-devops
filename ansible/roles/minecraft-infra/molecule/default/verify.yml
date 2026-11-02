@@ -18,12 +18,10 @@
 
     - name: Check project dir
       ansible.builtin.stat:
-        path: /opt/minecraft
+        path: /home/comp/terraform/minecraft_project
       register: proj
       failed_when: not proj.stat.isdir
 
-    - name: Check exporter jar
-      ansible.builtin.stat:
-        path: /opt/minecraft/minecraft-prometheus-exporter.jar
-      register: jar
-      failed_when: not jar.stat.exists
+    - name: Check exporter jar inside minecraft container
+      ansible.builtin.command: docker exec mc-devops-project test -f /data/plugins/minecraft-prometheus-exporter-3.1.2.jar
+      changed_when: false
