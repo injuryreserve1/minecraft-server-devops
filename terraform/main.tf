@@ -63,12 +63,6 @@ resource "docker_container" "minecraft_server" {
         container_path = "/data"
     }
 
-    volumes {
-        host_path      = "/home/comp/terraform/minecraft_project/minecraft-prometheus-exporter-3.1.2.jar"
-        container_path = "/data/plugins/minecraft-prometheus-exporter-3.1.2.jar"
-        read_only      = true
-    }
-
     upload {
         file           = "/data/plugins/PrometheusExporter/config.yml"
         content_base64 = base64encode(<<-EOF
