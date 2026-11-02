@@ -1,0 +1,8 @@
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: Create project dir
+      ansible.builtin.file:
+        path: /opt/minecraft
+        state: directory
+        mode: "0755"

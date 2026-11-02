@@ -16,6 +16,12 @@
       register: docker_svc
       failed_when: docker_svc.changed
 
+    - name: Check project dir
+      ansible.builtin.stat:
+        path: "{{ minecraft_project_dir }}"
+      register: project_dir
+      failed_when: not project_dir.stat.exists
+
     - name: Check if Minecraft container is running
       ansible.builtin.command: docker inspect -f '{{ '{{' }}.State.Running{{ '}}' }}' mc-devops-project
       register: container_status
@@ -23,7 +29,9 @@
       failed_when: container_status.stdout != "true"
 
     - name: Check exporter jar inside minecraft container
-      ansible.builtin.command: docker exec mc-devops-project test -f /data/plugins/minecraft-prometheus-exporter-3.1.2.jar
+      ansible.builtin.command: >-
+        docker exec mc-devops-project
+        test -f /data/plugins/minecraft-prometheus-exporter-{{ prometheus_exporter_version }}.jar
       changed_when: false
 
     - name: Check if Prometheus container is running
