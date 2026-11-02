@@ -16,12 +16,18 @@
       register: docker_svc
       failed_when: docker_svc.changed
 
-    - name: Check project dir
-      ansible.builtin.stat:
-        path: /home/comp/terraform/minecraft_project
-      register: proj
-      failed_when: not proj.stat.exists or not proj.stat.isdir
+    - name: Check if Minecraft container is running
+      ansible.builtin.command: docker inspect -f '{{ '{{' }}.State.Running{{ '}}' }}' mc-devops-project
+      register: container_status
+      changed_when: false
+      failed_when: container_status.stdout != "true"
 
     - name: Check exporter jar inside minecraft container
       ansible.builtin.command: docker exec mc-devops-project test -f /data/plugins/minecraft-prometheus-exporter-3.1.2.jar
       changed_when: false
+
+    - name: Check if Prometheus container is running
+      ansible.builtin.command: docker inspect -f '{{ '{{' }}.State.Running{{ '}}' }}' prometheus
+      register: prom_status
+      changed_when: false
+      failed_when: prom_status.stdout != "true"
