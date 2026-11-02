@@ -20,7 +20,7 @@
       ansible.builtin.stat:
         path: /home/comp/terraform/minecraft_project
       register: proj
-      failed_when: not proj.stat.isdir
+      failed_when: not proj.stat.exists or not proj.stat.isdir
 
     - name: Check exporter jar inside minecraft container
       ansible.builtin.command: docker exec mc-devops-project test -f /data/plugins/minecraft-prometheus-exporter-3.1.2.jar
