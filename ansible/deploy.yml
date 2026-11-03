@@ -12,7 +12,7 @@
           - unzip
         state: present
 
-    - name: Download and Install Terraform from Yandex Mirror
+    - name: Download and шnstall Terraform from Yandex Mirror
       unarchive:
         src: https://mirror.yandex.ru/mirrors/releases.hashicorp.com/terraform/1.9.1/terraform_1.9.1_linux_amd64.zip
         dest: /usr/local/bin/
