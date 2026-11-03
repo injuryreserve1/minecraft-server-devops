@@ -12,6 +12,10 @@ jobs:
     name: "Molecule Test"
     runs-on: self-hosted
 
+    defaults:
+      run:
+        working-directory: /home/comp/terraform/minecraft_project/ansible/molecule/default
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
