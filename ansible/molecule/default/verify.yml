@@ -1,0 +1,24 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Check if Docker is installed
+      command: docker --version
+      register: docker_check
+      changed_when: false
+
+    - name: Assert Docker is installed
+      assert:
+        that:
+          - "'Docker version' in docker_check.stdout"
+
+    - name: Check if Terraform is installed
+      command: terraform --version
+      register: tf_check
+      changed_when: false
+
+    - name: Assert Terraform is installed
+      assert:
+        that:
+          - "'Terraform v' in tf_check.stdout"

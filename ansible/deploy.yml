@@ -1,27 +1,20 @@
 ---
-- name: prepare server and launch minecraft infrastructure
-  hosts: mc_server
-  # become: true
+- name: Install Docker and Terraform fast
+  hosts: all
+  become: true
   tasks:
-    - name: download docker
-      ansible.builtin.apt:
-        name: docker.io
-        state: present
+
+    - name: Install Docker and unzip
+      apt:
         update_cache: true
-    
-    - name: create folder for project
-      ansible.builtin.file:
-        path: /home/comp/terraform/minecraft_project
-        state: directory
-        mode: '0755'
-    
-    - name: download plugin prometheus exporter
-      ansible.builtin.get_url:
-        url: https://github.com/sladkoff/minecraft-prometheus-exporter/releases/download/v3.1.2/minecraft-prometheus-exporter-3.1.2.jar
-        dest: /home/comp/terraform/minecraft_project/minecraft-prometheus-exporter-3.1.2.jar
-        mode: '0644'
-    
-    - name: launch terraform manifest
-      community.general.terraform:
-        project_path: "../terraform"
+        name:
+          - docker.io
+          - unzip
         state: present
+
+    - name: Download and Install Terraform from Yandex Mirror
+      unarchive:
+        src: https://mirror.yandex.ru/mirrors/releases.hashicorp.com/terraform/1.9.1/terraform_1.9.1_linux_amd64.zip
+        dest: /usr/local/bin/
+        remote_src: true
+        mode: '0755'

@@ -1,0 +1,7 @@
+host: 0.0.0.0
+port: 9940
+enable_metrics:
+  chunks: true
+  objects: true
+  players: true
+  jvm: true
