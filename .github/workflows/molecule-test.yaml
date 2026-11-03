@@ -4,8 +4,8 @@ on:
   pull_request:
     branches:
       - main
-    paths:
-      - 'ansible/**'
+    # paths:
+    #   - 'ansible/**'
 
 jobs:
   molecule:

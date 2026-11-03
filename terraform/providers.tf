@@ -5,6 +5,10 @@ terraform {
             version = "~> 4.2.0"
         }
     }
+
+    backend "local" {
+        path = "/home/comp/terraform/minecraft_project/state/terraform.tfstate"
+    }
 }
 
 provider "docker" {}
