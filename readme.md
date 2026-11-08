@@ -12,6 +12,14 @@
 
 ---
 
+### grafana дашборд
+
+![alt text](image.png)
+
+### loki логи
+
+![alt text](image.png)
+
 ## 🏗 Структура проекта
 
 ```text

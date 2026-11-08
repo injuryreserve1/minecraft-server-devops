@@ -28,6 +28,12 @@ resource "docker_container" "prometheus" {
     container_path = "/prometheus"
   }
 
+  volumes {
+    host_path      = "${path.cwd}/../templates/prometheus.yml"
+    container_path = "/etc/prometheus/prometheus.yml"
+  }
+
+
   depends_on = [docker_container.minecraft_server]
 }
 
@@ -56,5 +62,35 @@ resource "docker_container" "grafana" {
     container_path = "/var/lib/grafana"
   }
 
+  volumes {
+    host_path      = "${path.cwd}/../templates/grafana_datasource.yml"
+    container_path = "/etc/grafana/provisioning/datasources/datasource.yaml"
+  }
+
   depends_on = [docker_container.prometheus]
+}
+
+# импортер
+resource "docker_image" "mc_exporter" {
+  name         = "itzg/mc-monitor:latest"
+  keep_locally = true
+}
+
+resource "docker_container" "mc_exporter" {
+  name    = "mc-exporter"
+  image   = docker_image.mc_exporter.image_id
+  restart = "unless-stopped"
+
+  command = [
+    "export-for-prometheus",
+    "-servers=mc-devops-project:25565"
+  ]
+
+  ports {
+    internal = 8080
+    external = 9851
+  }
+
+  networks_advanced { name = docker_network.mc_net.name }
+  depends_on        = [docker_container.minecraft_server]
 }
