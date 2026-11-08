@@ -14,11 +14,11 @@
 
 ### grafana дашборд
 
-![alt text](image.png)
+![alt text](readme_image/image.png)
 
 ### loki логи
 
-![alt text](image.png)
+![alt text](readme_image/image.png)
 
 ## 🏗 Структура проекта
 
