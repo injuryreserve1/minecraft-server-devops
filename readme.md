@@ -14,7 +14,7 @@
 
 ### grafana дашборд
 
-![alt text](readme_image/image.png)
+![alt text](readme_image/dashboard.png)
 
 ### loki логи
 
